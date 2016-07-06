@@ -7,7 +7,8 @@ To run the test: ```./gradlew startSparkJobServerContainer```
 To try it out with docker: ```./gradlew startSparkJobServerContainer```
 
 To run it with standalone spark jobserver, you will need to:
-1. Update the config file for the cassandra dao specific config:
+
+- Update the config file for the cassandra dao specific config:
 ```
   jobserver {
     port = 8090
@@ -25,4 +26,5 @@ To run it with standalone spark jobserver, you will need to:
   }
 ```
 take a look at the [docker config file](https://github.com/revinate/spark-jobserver-cassandra-dao/blob/master/docker/docker.conf) as an example of full config file.
-2. Update the start script with param: ```--jar spark-jobserver-cassandra-dao.jar``` to include the jar into the spark classpath of the spark job server.
+
+- Update the start script with param: ```--jar spark-jobserver-cassandra-dao.jar``` to include the jar into the spark classpath of the spark job server.
