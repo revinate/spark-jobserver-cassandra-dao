@@ -58,7 +58,7 @@ task configureCassandraContainer(type: DockerSingleRun) {
 
 startCassandraContainer.finalizedBy configureCassandraContainer
 
-task startSparkJobServerContainer(type: DockerStartContainer, dependsOn: [createNetwork, createSparkJobServerImage]) {
+task startSparkJobServerContainer(type: DockerStartContainer, dependsOn: [createNetwork, createSparkJobServerImage, startCassandraContainer]) {
     containerName = sparkJobServerContainer
     image = sparkJobServerContainer
     connectedNetworks = dockerNetwork

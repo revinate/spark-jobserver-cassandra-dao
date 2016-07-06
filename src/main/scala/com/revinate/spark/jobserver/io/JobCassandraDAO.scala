@@ -62,11 +62,8 @@ class JobCassandraDAO(config: Config) extends JobDAO {
     .withPort(cassandraPort)
     .withLoadBalancingPolicy(new TokenAwarePolicy(DCAwareRoundRobinPolicy.builder.withLocalDc(cassandraDataCenter).build))
     .withQueryOptions(cassandraQueryOptions)
+    .withCredentials(cassandraUser, cassandraPassword)
     .build
-  private val tupleType = cluster.getMetadata.newTupleType(DataType.timestamp(), DataType.varchar())
-  private val dateTimeCodec = new DateTimeCodec(tupleType)
-  cluster.getConfiguration.getCodecRegistry.register(dateTimeCodec)
-
   val cqlSession = cluster.init.connect(cassandraKeyspace)
 
   case class Jar(
