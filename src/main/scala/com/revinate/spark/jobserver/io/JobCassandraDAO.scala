@@ -9,7 +9,6 @@ import com.datastax.driver.core.policies.{DCAwareRoundRobinPolicy, TokenAwarePol
 import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.datastax.driver.core.querybuilder.QueryBuilder._
 import com.datastax.driver.core.utils.UUIDs
-import com.datastax.driver.extras.codecs.joda.DateTimeCodec
 import com.stratio.cassandra.lucene.builder.Builder._
 import com.stratio.cassandra.lucene.builder.search.sort.SimpleSortField
 import com.typesafe.config.{Config, ConfigFactory, ConfigRenderOptions}
