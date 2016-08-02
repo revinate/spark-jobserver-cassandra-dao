@@ -5,6 +5,7 @@ import com.typesafe.config.{Config, ConfigFactory, ConfigValueFactory}
 import org.joda.time.DateTime
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FunSpecLike, Matchers}
 import java.io.File
+import java.util.Date
 
 import spark.jobserver.io.{JarInfo, JobInfo}
 
@@ -133,6 +134,15 @@ class JobCassandraDAOSpec extends FunSpecLike with Matchers with BeforeAndAfter 
       jarFilePath should equal (jarFile.getAbsolutePath)
       // The file shouldn't be empty
       jarFile.length() shouldNot equal (0)
+    }
+
+    it("should be able to retrieve the latest upload time") {
+      val uploadTime =  new DateTime()
+
+      // save another version of the jar
+      dao.saveJar(jarInfo.appName, uploadTime, jarBytes)
+
+      dao.getLastUploadTime(jarInfo.appName).get.getMillis should equal (uploadTime.getMillis)
     }
   }
 

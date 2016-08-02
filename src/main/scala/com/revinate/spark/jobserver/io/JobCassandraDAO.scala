@@ -6,7 +6,7 @@ import java.util.UUID
 
 import com.datastax.driver.core._
 import com.datastax.driver.core.policies.{DCAwareRoundRobinPolicy, TokenAwarePolicy}
-import com.datastax.driver.core.querybuilder.QueryBuilder
+import com.datastax.driver.core.querybuilder.{Ordering, QueryBuilder}
 import com.datastax.driver.core.querybuilder.QueryBuilder._
 import com.datastax.driver.core.utils.UUIDs
 import com.stratio.cassandra.lucene.builder.Builder._
@@ -222,6 +222,17 @@ class JobCassandraDAO(config: Config) extends JobDAO {
       .toStream
       .map(row => (row.getString("job_id"), ConfigFactory.parseString(row.getString("job_config"))))
       .toMap
+
+  override def getLastUploadTime(appName: String): Option[DateTime] = {
+    val record = cqlSession.execute(QueryBuilder
+      .select
+      .from(TABLE_JAR_ID_LOOKUP)
+      .where(QueryBuilder.eq("app_name", appName))
+      .orderBy(QueryBuilder.desc("upload_time"))
+      .limit(1)
+    ).one()
+    Option(record).map(_.getTimestamp("upload_time")).map(new DateTime(_))
+  }
 
   // Cache the jar file into local file system.
   private def cacheJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte]) {
