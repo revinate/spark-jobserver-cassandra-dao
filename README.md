@@ -3,6 +3,8 @@ Cassandra dao plugin for (spark jobserver)[https://github.com/spark-jobserver/sp
 
 This plugin depends on cassandra 3.0+ and it requires [cassandra lucence plugin](https://github.com/Stratio/cassandra-lucene-index) to get jobs sorted based on the start_time.
 
+To build the project: ```./gradlew clean build shadowJ```
+
 To run the test: ```./gradlew test```
 
 To try it out with quickly with docker: ```./gradlew startSparkJobServerContainer```
