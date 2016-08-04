@@ -143,7 +143,7 @@ class JobCassandraDAO(config: Config) extends JobDAO {
   }
 
   override def getApps: Map[String, DateTime] =
-    cqlSession.execute(select("jar_id", "app_name", "upload_time").from(TABLE_JARS)).all()
+    cqlSession.execute(select("jar_id", "app_name", "upload_time").from(TABLE_JAR_ID_LOOKUP)).all()
       .toList
       .map(Jar.apply)
       .map(jar => (jar.appName, jar.uploadTime))
