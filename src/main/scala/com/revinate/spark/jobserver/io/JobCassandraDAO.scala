@@ -149,6 +149,8 @@ class JobCassandraDAO(config: Config) extends JobDAO {
       .map(jar => (jar.appName, jar.uploadTime))
       .groupBy(_._2).values
       .map(getLatestApp)
+      .toList
+      .sortWith((t1, t2) => dateTimeComparator(t1._2, t2._2))
       .toMap
 
   override def saveJobConfig(jobId: String, jobConfig: Config) {
@@ -252,7 +254,10 @@ class JobCassandraDAO(config: Config) extends JobDAO {
 
   // Get the latest app (which has the greatest uploadTime from a list of appname&uploadtime
   private def getLatestApp(group: List[(String, DateTime)]): (String, DateTime) =
-    group.sortWith((t1, t2) => (t1._2 compareTo t2._2) == -1).head
+    group.sortWith((t1, t2) => dateTimeComparator(t1._2, t2._2)).head
+
+  // Comparator to sort datetime desc
+  private def dateTimeComparator(d1: DateTime, d2: DateTime) = (d1 compareTo d2) == -1
 
   // Fetch the jar file from database and cache it into local file system.
   private def fetchAndCacheJarFile(appName: String, uploadTime: DateTime) {
